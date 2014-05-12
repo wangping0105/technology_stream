@@ -1,0 +1,34 @@
+<script charset="utf-8" src="/assets/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/assets/kindeditor/lang/zh_CN.js"></script>
+<script>
+  KindEditor.ready(function(K) {
+
+    window.editor = K.create('#k_editor_id', {
+      width : '100%',
+      minWidth : '380px',
+      items : ['source',
+        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
+      afterCreate : function() {
+        this.sync();
+      },
+      afterBlur: function(){
+        this.sync();
+      }//同步KindEditor的值到textarea文本框
+    });
+  });
+</script>
+<%=form_for(@post) do |f|%>
+  <div class="index-right_left_div" >
+    <%=f.text_field :title,placeholder:"填写标题",style:"border: 1px solid #CCCCCC;width:100%;text-align:center;line-height: 2;font-size: 15px;"%>
+  </div>
+  <div class="index-right_left_div">
+    选择节点：<%=grouped_collection_select @nodes ,:node_id,Section.includes(:nodes),:nodes, :name, :id, :name,{:object => @post},class: 'chosen-select',name:"post[node]"%>
+    </div>
+    <div class="index-right_left_div">
+      <textarea id="k_editor_id" name="post[content]"style="width: 556px; height: 345px;border-color:#807E7E"><%=@post.content if !@post.nil?%></textarea>
+    </div>
+    <div style=" text-align: center;">
+      <button   class="send_post" onclick="send_post(this)" type="button">发    表</button>
+    </div>
+  <%end%>

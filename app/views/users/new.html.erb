@@ -1,0 +1,100 @@
+<div style="height:100px;background: #f2eada;"></div>
+<div class="loginBox" style="height:470px; width:470px;">
+  <h1>R&P•技术流</h1>
+  <div class="resForm">
+    <%= form_for(:users,  :url => users_path) do |f| %>
+      <div><label>E-mail：</label><%= f.email_field :email %><span class="check">*</span></div>
+      <div><label>用户名：</label> <%= f.text_field :name %><span class="check">*</span></div>
+      <div><label>密码：</label><%= f.password_field :password %><span class="check">*</span></div>
+      <div><label>确认：</label> <%= f.password_field :password_confirmation %><span class="check">*</span></div>
+      <div><label>QQ：</label><%= f.text_field :qq %><span class="check">*</span></div>
+      <button type="button" onclick="submit_user_form(this)" class="loginBtn">注册</button>
+      <%=link_to sessions_path do%>返回登录<%end%>
+    </div>
+    <div class="loginColor"></div>
+  <% end %>
+</div>
+
+<script>
+  function aa(){
+    $("#users_name").val("");
+    $("#users_email").val("");
+    $("#users_password_confirmation").val("");
+    $("#users_password").val("");
+    $("#users_phone").val("");
+  }
+  setTimeout('aa()',1000);
+</script>
+
+<script>
+  function check(){
+    flg =(checkEmail()&&checkName()&&checkPassword()&&checkQQ());
+    return flg;
+  }
+  function checkName(){
+    flg=true;
+    var name = document.getElementById('users_name');
+    if(($.trim(name.value).length)==0){
+      alert('用户名不能为空');
+      flg=false;
+    }
+
+    return flg;
+  }
+  function checkPassword(){
+    var flg=false;
+    var password = document.getElementById('users_password').value;
+    var repassword = document.getElementById('users_password_confirmation').value;
+
+
+    if(password.length>=6){
+      if($.trim(password).length==0){
+        alert("密码需要至少包含一个非空白符")
+
+      }
+      else if(password==repassword){
+        flg=true;
+      }else{
+        alert("两次密码输入不一致");
+      }
+
+    }else{
+      alert("请输入长度大于6的密码");
+    }
+    return flg;
+  }
+
+
+  function checkEmail(){
+    flg=true;
+    var email = document.getElementById('users_email').value;
+    var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
+    if(!emailReg.test(email))
+    {
+      alert('请输入有效的E_mail');
+      flg=false;
+    }
+
+    return flg;
+
+  }
+
+
+
+  function checkQQ(){
+    flg=true;
+    var phone = document.getElementById('users_qq').value;
+    var phoneReg =/[0-9]/;
+    if(!phoneReg.test(phone)){
+      alert('qq请输入数字');
+      flg=false;
+    }
+
+    return flg;
+  }
+
+
+
+
+</script>

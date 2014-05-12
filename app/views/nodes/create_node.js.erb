@@ -1,0 +1,4 @@
+<%if @msg=="添加成功"%>
+$("#nodes").html('<%=j(render 'nodes')%>');
+<%end%>
+alert("<%=@msg%>");

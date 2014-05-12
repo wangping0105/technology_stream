@@ -1,0 +1,54 @@
+<div class="index-right_left_div">
+  <fieldset >
+    <legend>主节点管理</legend>
+    <div class="section">
+      <%@sections.each do |section|%>
+        <span>
+          <a href="/nodes/<%=section.id%>/destroy_section">X</a>
+          <div>
+            <%=section.name%>
+          </div>
+        </span>
+      <%end%>
+      <span onclick="show_section(this)">
+        +
+      </span>
+    </div>
+    <div class="add_section" id="add_section">
+      <span>
+        输入名称：<input name="section_name" /><button onclick="submit_section(this)">确定</button><button onclick="cancel_tow(this)">取消</button>
+      </span>
+    </div>
+  </fieldset>
+</div>
+<div  class="index-right_left_div">
+  <fieldset >
+    <legend>支节点管理</legend>
+    <div>
+      <span>选择主节点：</span>
+      <select onclick="select_mian_node(this)">
+        <%@sections.each do |section|%>
+          <option value="<%=section.id%>"><%=section.name%></option>
+        <%end%>
+      </select>
+    </div>
+    <div id="nodes" class="nodes">
+      <%=render 'nodes'%>
+    </div>
+    <div class="add_section" id="add_node" >
+      <input type="hidden" name="section_id" value="<%=@sections.first.id%>"/>
+      <span>
+        <span>
+          输入名称：<input name="node_name" />
+        </span><br/>
+        <span>
+          输入摘要：<input name="node_summary" />
+        </span><br/>
+        <span style="margin: auto;padding-top: 5px">
+          <button onclick="submit_node(this)">确定</button>
+          <button onclick="cancel_three(this)">取消</button>
+        </span>
+      </span>
+    </div>
+  </fieldset>
+</div>

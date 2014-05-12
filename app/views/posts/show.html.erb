@@ -1,0 +1,174 @@
+<script charset="utf-8" src="/assets/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/assets/kindeditor/lang/zh_CN.js"></script>
+<script>
+  KindEditor.ready(function(K) {
+    window.editor = K.create('#k_editor_id', {
+      width : '100%',
+      minWidth : '370px',
+      items : ['source',
+        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
+      afterCreate : function() {
+        this.sync();
+      },
+      afterBlur: function(){
+        this.sync();
+      }//同步KindEditor的值到textarea文本框
+    });
+    K.create('#reply_text_area', {
+      width : '100%',
+      minWidth : '370px',
+      items : ['source',
+        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
+      afterCreate : function() {
+        this.sync();
+      },
+      afterBlur: function(){
+        this.sync();
+      }//同步KindEditor的值到textarea文本框
+    });
+  });
+</script>
+<div class="index-right_left_div">
+  <a href="/">Home</a>/<%=@post.section_name%>/<%=link_to @post.node_name,diff_categories_post_post_path(@post.node_id)%>
+</div>
+<div class="index_main_post index-right_left_div">
+
+  <h1><%=@post.title%></h1>
+  <span class="index_main_post_span">*<%=@post.user_name%>*于<%=@post.created_at.to_s[0...16]%>发布</span>
+  <div class="post_content">
+    <%= raw(markdown(@post.content))%>
+
+  </div>
+  <%if signed_in?%>
+    <div class="post_dispose">
+      <span>
+        <%unless @praise_ids.include?(current_user.id)%>
+          <%=link_to '赞',praise_post_post_path(@post.id),:'data-no-turbolink'=>""%>
+        <%else%>
+          <%=link_to '取消赞',dis_praise_post_post_path(@post.id),:'data-no-turbolink'=>""%>
+        <%end%>
+      </span>
+      <span>
+        <%unless @collection_ids.include?(current_user.id)%>
+          <%=link_to '收藏',collection_post_post_path(@post.id),:'data-no-turbolink'=>""%>
+        <%else%>
+          <%=link_to '取消收藏',dis_collection_post_post_path(@post.id),:'data-no-turbolink'=>""%>
+        <%end%>
+
+      </span>
+      <span>
+        <%= link_to '编辑',edit_post_path(@post),:'data-no-turbolink'=>""%>
+      </span>
+      <span>
+        <%unless @attention_ids.include?(current_user.id)%>
+          <%=link_to '关注',attention_post_post_path(@post.id),:'data-no-turbolink'=>""%>
+        <%else%>
+          <%=link_to '取消关注',dis_attention_post_post_path(@post.id),:'data-no-turbolink'=>""%>
+        <%end%>
+      </span>
+      <%if current_user.admin?%>
+        <span>
+          <%=link_to '删除',post_path(@post),method: :delete,confirm:'确认删除？'%>
+        </span>
+      <%end%>
+    </div>
+  <%end%>
+</div>
+<div class="reply_area index-right_left_div">
+  <h2>
+    <%if @replies.blank?%>
+      暂无回复哦！
+    <%else%>
+      共收到<%=@post.replies_count%>条回复
+    <%end%>
+  </h2>
+  <%@replies.each_with_index do |reply,index|%>
+    <div class="reply"  id="reply<%=@last_count+index+1%>">
+      <div class="reply_img">
+        <%=link_to clients_path(reply.user_id) do%>
+          <img  src="<%=  reply.avatar_url%>" />
+        <%end%>
+      </div>
+      <div class="reply_infos">
+        <div class="reply_info">
+          <span class="name">
+            <%=link_to reply.user_name,clients_path(reply.user_id)%>
+          </span>
+          <span class="time">
+            <%=reply.created_at.strftime("%y-%m-%d %H:%M:%S")%>
+          </span>
+          <%if signed_in?%>
+            <span class="opts">
+              <a class="icon small_reply" data-floor="1" data-login="tdseed"  onclick="show_reply(this,<%=reply.id%>,<%=reply.user_id%>,0)" title="回复此楼"></a>
+            </span>
+          <%end%>
+        </div>
+        <div class="reply_body">
+          <%=raw reply.content%>
+        </div>
+      </div>
+      <%@reply_again_gruops[reply.id].each do |reply_again|%>
+        <div class="reply_again"  >
+          <div class="reply_again_img">
+            <img  src="<%=  reply_again.avatar_url%>" />
+          </div>
+          <div class="reply_infos">
+            <div class="reply_info">
+              <span class="name">
+                <%=link_to reply_again.user_name,clients_path(reply_again.user_id)%>回复
+                <%=link_to reply_again.user1_name,clients_path(reply_again.user1_id)%>
+              </span>
+              <span class="time">
+                <%=reply_again.created_at.strftime("%y-%m-%d %H:%M:%S")%>
+              </span>
+              <%if signed_in?%>
+                <span class="opts">
+                  <a class="icon small_reply" data-floor="1" data-login="tdseed"  onclick="show_reply(this,<%=reply.id%>,<%=reply_again.user_id%>,1)" title="回复此楼"></a>
+                </span>
+              <%end%>
+            </div>
+            <div class="reply_body">
+              <%=raw reply_again.content%>
+            </div>
+          </div>
+        </div>
+      <%end unless @reply_again_gruops[reply.id].nil?%>
+    </div>
+  <%end%>
+  <div class="digg_pagination pageTurn">
+    <%=will_paginate @replies,:previous_label=>'上一页',:next_label=>'下一页'%>
+  </div>
+
+</div>
+<%if signed_in?%>
+  <div class="reply_area index-right_left_div">
+    <%=form_for(:posts,url:create_reply_post_path(@post)) do |f|%>
+      <input type="hidden" name="post_id" value="<%=@post.id%>" />
+      <textarea id="k_editor_id" name="reply_content"></textarea>
+      <div style="text-align:center;margin-top: 5px;">
+        <button   class="send_post" onclick="create_reply(this)" type="button">回    复</button>
+      </div>
+    <%end%>
+  </div>
+
+  <div class="tab_mess" >
+    <h1 class="h1_content">回复</h1>
+    <h2>信息内容</h2>
+    <form>
+      <div class="create_main_microposts">
+        <input type="hidden" name="reply_id" />
+        <input type="hidden" name="target_user_id" />
+        <input type="hidden" name="reply_type" />
+        <div class="textarea_box">
+          <textarea id="reply_text_area" name="reply_again_content" cols="" rows="" placeholder="字数限制250字"></textarea>
+        </div>
+        <div class="tab_mess_btn">
+          <button type="button" onclick="commit_reply(this)">提交</button>
+          <button type="button" class="form_cancel" onclick="cancle_this_window(this)">取消</button>
+        </div>
+      </div>
+    </form>
+  </div>
+<%end%>

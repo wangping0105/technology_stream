@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <link href="/assets/home.css" type="text/css" rel="stylesheet" />
+        <link href="/assets/jquery.mobile-1.3.2.css" rel="stylesheet" type="text/css"/>
+        <script src="/assets/home.js" ></script>
+        <script src="/assets/jquery-mobile/jquery.mobile-1.3.2.js"></script>
+        <script src="/assets/jquery.js">
+        </script>
+        <script>
+            $(document).on("pageinit", ".all", function() {
+                $(".all").on("swipeleft", function(){
+                    alert("left");
+                    $(".home-left").hide();
+
+
+                    $(".home-middle").css('width','100%');
+                });
+                $(".all").on("swiperight", function(){
+                    alert("right");
+
+                    $(".home-middle").css('width',"70%");
+                    $(".home-left").show();
+                });
+            });
+        </script>
+    </head>
+    <body class='all'  data-role="page">
+        <div class="home" >
+            <div class="home-left"      >
+            </div>
+            <div class="home-middle"     >
+                <div class="home-middle-left"     style="background:yellow;  float:left; height:100%;width:67%;" >
+                </div>
+                <div class="home-middle-right"    style="background:blue; float:right; height:100%;width:33%;" >
+                    <ul>
+                        <li style="width:250px;">
+			   sadsad
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

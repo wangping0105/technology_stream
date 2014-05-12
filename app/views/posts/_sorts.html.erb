@@ -1,0 +1,11 @@
+<div class="sorts " id="node_info">
+    <span class="lb">查看:</span>
+    <ul>
+      <li class="<%= controller.action_name=='all_index' ? 'active':'' %>"><a href="/posts/all_index">默认</a></li> /
+      <li class="<%= controller.action_name=='popular' ? 'active':'' %>">
+        <a class="popular" href="/posts/popular"><i class="icon small_liked"></i> 优质帖子</a>
+      </li> /
+      <li class="<%= controller.action_name=='no_reply' ? 'active':'' %>"><a href="/posts/no_reply" rel="nofollow">无人问津</a></li> /
+      <li class="<%= controller.action_name=='last_created' ? 'active':'' %>"><a href="/posts/last_created" rel="nofollow">最新创建</a></li>
+    </ul>
+  </div>

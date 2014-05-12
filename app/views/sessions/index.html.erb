@@ -1,0 +1,29 @@
+<div style="height:100px;background: #f2eada;"></div>
+<div>
+  <div class="login" style="width: 407px;">
+    <h1>R&P•技术流</h1>
+    <%= form_for(:sessions,url:sessions_path,html:{onsubmit: "return check()"})  do |f| %>
+      <div class="login_info cf"style="height:95px;">
+
+        <ul>
+          <li>
+            <p><%= f.label :login, "帐号：" %>
+              <%= f.text_field :login, :placeholder =>"用户名或邮箱" %></p>
+          </li>
+
+          <li><%= f.label :password, "密码：" %>
+            <%= f.password_field :password %></li>
+
+        </ul>
+      </div>
+      <div class="login_act" >
+        <p><%= f.submit "登录", :class => "login_btn loginBtn" %></p>
+        <br/>
+        <p>
+          <a class="rsg_btn blue_btn" href="/users/new">注册</a>
+          <%= link_to "忘记密码", "#" %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>

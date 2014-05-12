@@ -1,0 +1,42 @@
+<div class="user_info_list">
+  <ul class="nav">
+    <%=render 'ul_nav'%>
+  </ul>
+  <div class="div0 div1" style="margin: 0px 10px 0px 10px;">
+    <h1>收藏的帖子</h1>
+    <div>
+      <ul class="like" >
+        <%@my_collections.each do |like_post|%>
+          <li style="padding-bottom: 20px;">
+
+            <label id="node_name">
+              <%=like_post.node_name%>
+            </label>
+            <label >
+              <%=link_to like_post.title, post_path(like_post.id),:'data-no-turbolink'=>""%>
+              <%if like_post.cream %>
+                <i class="icon small_cert_on" title="精华贴"></i>
+              <%end%>
+            </label>
+            <span  ><%=link_to 'X',dis_collection_post_in_user_info_post_path(like_post.id),id:"user_info_close",title:'取消收藏帖子'%></span>
+            <span style="text-align: right;
+margin-top: 0px;
+width: 100%">
+              <label id="post_name">
+                作者:<%=like_post.user_name%>
+              </label>
+              <%=like_post.praises_count.nil? ? 0:like_post.praises_count%>人喜欢,
+              <%=like_post.replies_count.nil? ? 0:like_post.replies_count%>条回复
+              <%=like_post.collections_count.nil? ? 0:like_post.collections_count%>人收藏
+              <%=like_post.attentions_count.nil? ? 0:like_post.attentions_count%>人关注
+            </span>
+          </li>
+        <%end%>
+      </ul>
+    </div>
+    <div class="digg_pagination pageTurn">
+      <%=will_paginate @my_collections,:previous_label=>'上一页',:next_label=>'下一页'%>
+    </div>
+  </div>
+
+</div>

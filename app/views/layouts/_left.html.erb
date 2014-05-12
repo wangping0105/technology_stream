@@ -1,0 +1,63 @@
+<div class="index-left">
+  <div>欢迎您！
+    <%unless current_user.nil?%>
+      <%if current_user.admin?%>
+        管理员
+      <%else%>
+        会员
+      <%end%>
+    <%end%>
+  </div>
+  <div class="user_area">
+    <ul>
+      <%= form_for :users,url:upload_avatar_users_path,:html => { :multipart => true }, :remote => true do |f| %>
+        <li class="user_img">
+          <img src="<%=current_user.nil? ? "/assets/guest.jpg":current_user.avatar_url%>" width="100" height="100"/>
+          <%unless current_user.nil? %>
+            <a href="javascript:void(0);" class="avater_a">
+              <span>修改头像</span>
+              <input  name="file_upload" id="file_uploads"type="file" onchange="upload_avatar(this)"/>
+            </a>
+          <%end%>
+        </li>
+        <li>
+          <input type="submit" id="submit_button" style="display: none;"value="www"/>
+        </li>
+      <%end%>
+      <li class="avater" id="changes_avatar" style="z-index: 99;display:none;position: absolute;left: 258px;top: 47px;background: #fff;width: 330px;height: 396px;  ">
+
+      </li> 
+      <li>
+        <% if current_user.nil?%>
+          <div style="margin-top:20px;margin-left: 30px; "> <%=link_to '登录' , sessions_path %></div>
+          <div style="margin-top:10px;margin-left: 30px; "><%=link_to '注册' , new_user_path%></div>
+        <%else%>
+          <div style="min-height: 55px;">
+            <%=link_to current_user.name,"#"%>(<%=User::SEX_NAME[current_user.sex]%>)<br/>
+            <%=current_user.remark%>
+          </div>
+          <div style="margin-top:10px;margin-left: 30px; "><%=link_to '注销登录' , destroy_user_users_path,:'data-no-turbolink'=>""%></div>
+        <%end%>
+      </li>
+    </ul>
+  </div>
+  <%unless current_user.nil? %>
+    <div class="align_middle">
+      <%=link_to '发帖子',new_post_path,class:"green_btn",:'data-no-turbolink'=>""%>
+      </div>
+    <%end%>
+    <div style="overflow: auto;height: 460px;margin-top: 10px;">
+      节点列表
+      <%@nodeses.each do |section,nodes|%>
+        <div class="node_list" onclick="show_node_list(this)">
+          <div ><h1 style="font-size: medium;"><%=section_name(@sections,section)%></h1></div>
+          <div class="node_area">
+            <%nodes.each do |node|%>
+              <div> &nbsp;<%=link_to node.name,diff_categories_post_post_path(node.id)%></div>
+            <%end%>
+          </div>
+        </div>
+      <%end%>
+    </div>
+  </div>
+

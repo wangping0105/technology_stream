@@ -1,0 +1,14 @@
+
+
+<li class="<%= controller.action_name == 'index' ? 'hover':''%>">
+  <%=link_to '个人信息',clients_path(@target_user.id)  %>
+</li>
+<li class="<%= controller.action_name == 'my_posts' ? 'hover':''%>">
+  <%=link_to '帖子',my_posts_clients_path(@target_user.id)  %>
+</li >
+<li class="<%= controller.action_name == 'my_collections' ? 'hover':''%>">
+  <%=link_to '收藏',my_collections_clients_path(@target_user.id)  %>
+</li>
+<li class="<%= controller.action_name == 'my_diaries' ? 'hover':''%>">
+  <%=link_to '日志本',my_diaries_clients_path(@target_user.id)  %>
+</li>

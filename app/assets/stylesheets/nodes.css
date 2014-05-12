@@ -1,0 +1,77 @@
+fieldset{
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+.section,.nodes,.tips{
+    width: 620px;
+    margin: auto;
+}
+.section a,.nodes a{
+    position: absolute;
+    margin-top: -9px;
+    margin-left: 56px;
+    color: red;
+    display: none;
+}
+.section span:hover a,.nodes span:hover a{
+    display: inherit;
+}
+.section span,.nodes span{
+    display: inline-block;
+    background: #bbb;
+    margin: 5px;
+    padding: 10px;
+    text-align: center;
+    width: 122px;
+    border-radius: 5px;
+}
+.add_section,.add_tip{
+    display: none;
+    position: absolute;
+    background: white;
+    color: black;
+    padding: 10px 10px;
+    border-radius: 5px 5px 5px 5px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0666667) 2px 2px 2px;
+    box-shadow: rgba(0, 0, 0, 0.0666667) 2px 2px 2px;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #bbb;
+}
+.add_section button,.add_tip button {
+    margin-left: 5px;
+    padding: 2px 10px;
+}
+#add_node span{
+    display: inline-block;
+    margin-top: 5px;
+
+}
+
+.tips div{
+    padding: 5px;
+    margin: 5px 0px;
+    text-align: left;
+    width: 100%;
+    border: 1px solid #bbb;
+}
+.tips span{
+    border: 1px solid #bbb;
+    width: 100px;
+    text-align: center;
+    padding: 5px;
+    display: inline-block;
+}
+.tips .close{
+    position: absolute;
+margin-left: 605px;
+display: none;
+}
+.tips div:hover .close{
+    display: inherit;
+}
+#add_tip span textarea{
+    width: 200px;
+    height: 100px;
+    border: 1px solid #bbb;
+}

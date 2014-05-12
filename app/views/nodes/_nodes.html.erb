@@ -1,0 +1,11 @@
+<%@nodes.each do |node|%>
+  <span>
+    <a href="/nodes/<%=node.id%>/destroy_node">X</a>
+    <div>
+      <%=node.name%>
+    </div>
+  </span>
+<%end%>
+<span onclick="show_node(this)">
+  +
+</span>

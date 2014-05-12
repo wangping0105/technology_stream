@@ -1,0 +1,33 @@
+<div class="index-right_left_div">
+  <div class="tools">
+    <%=link_to '清空',empting_messages_messages_path,class:"btn btn-danger",confirm:"确定清空？"%>
+      <h1 class="pull-right">通知提醒 <small style="font-size:12px;margin-left:5px;">(<%=@messages.length%> 条)</small></h1>
+    </div>
+    <%@messages.each do|message|%>
+      <%message.update_attribute(:status,1) unless message.status%>
+      <div class="message_area">
+        <div class="reply_img">
+          <img src="<%= message.avatar_url%>" />
+        </div>
+        <div class="user_post_area">
+          <div class="post_title">
+            <span>
+              <%=  message.user_name%> 在
+            </span>
+            <%=link_to message.post_title , post_path(message.post_id),:'data-no-turbolink'=>""%>中回复了您
+          </div>
+          <div class="reply-content">
+            <span>
+              <%= raw message. content%>
+            </span>
+          </div>
+          <div class="post_info">
+            
+            <span>
+              <%=  message.created_at.strftime("%y-%m-%d %H:%M:%S")%>
+            </span>
+          </div>
+        </div>
+      </div>
+    <%end%>
+  </div>

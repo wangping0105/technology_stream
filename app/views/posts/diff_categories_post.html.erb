@@ -1,0 +1,9 @@
+<div class="index_main_post index-right_left_div">
+  <div class="node_name">
+    <h1><%=@node.name%></h1><span>节点下共<%=@node.posts_count%>个帖子</span>
+    <div>
+      <%=@node.summary%>
+    </div>
+  </div>
+  <%=render 'posts_list',posts:@posts%>
+</div>

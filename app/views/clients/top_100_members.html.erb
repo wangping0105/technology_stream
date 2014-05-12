@@ -1,0 +1,38 @@
+<div class="index_main_post index-right_left_div">
+  <h2 >社区活跃会员</h2>
+  <div class="top_members">
+    <span>目前已经有<%=@user_count.count%>名会员</span>
+  </div>
+  <div class="top_members_body">
+    <div class="top_members_img">
+      <ul>
+        <%@users.each do|user|%>
+          <li>
+            <span>
+              <%=link_to clients_path(user.id) do%>
+                <img  src="<%=  user.avatar_url%>" />
+              <%end%>
+
+            </span>
+            <div>
+              <%=link_to user.name,clients_path(user.id)%>
+            </div>
+
+          </li>
+        <%end%>
+      </ul>
+    </div>
+    <div>
+      &nbsp;
+    </div>
+  </div>
+</div>
+<script>
+  var i = <%=@users.length%>
+  if(i!=1){
+  var height = 100 + (i-1) / 6 *84
+  $('.top_members_img').css({
+    height:height
+  });
+  }
+</script>

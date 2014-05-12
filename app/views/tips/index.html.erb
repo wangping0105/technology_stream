@@ -1,0 +1,23 @@
+<div class="index-right_left_div">
+  <fieldset >
+    <legend>小贴士点管理</legend>
+    <div class="tips">
+      <%@tips.each do |tip|%>
+      <div>
+        <a href="/tips/<%=tip.id%>" class="close" data-method="delete" data-confirm="确认删除？">X</a>
+        <%=tip.content%>
+      </div>
+      <%end%>
+      <span onclick="show_tip(this)">+</span>
+    </div>
+  </fieldset>
+  <div class="add_tip" id="add_tip">
+    <span>
+      <%=form_for(:tips,url:tips_path) do |f|%>
+        <textarea name="tip_content" placeholder="输入内容,200字之内" ></textarea><br/>
+        <button type="button" onclick="submit_tip(this)">确定</button>
+        <button type="button" onclick="cancel_three(this)">取消</button>
+      <%end%>
+    </span>
+  </div>
+</div>

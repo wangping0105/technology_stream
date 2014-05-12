@@ -1,0 +1,40 @@
+<div class="post_list">
+  <%if posts.blank?%>
+    <div style="text-align: center;color:#666;">
+      暂无帖子
+    </div>
+  <%else%>
+    <%posts.each do |post|%>
+      <div class="post_list_item">
+        <div class="user_avartar">
+          <img src="<%=post.avatar_url%>" />
+        </div>
+        <div class="user_post_area">
+          <div class="post_title">
+            <%=link_to post.title , post_path(post),:'data-no-turbolink'=>""%>
+            <%if post.cream %>
+              <i class="icon small_cert_on" title="精华贴"></i>
+            <%end%>
+          </div>
+          <div class="post_info">
+            <span>
+              <%=post.node_name%> •
+            </span>
+            <span>
+              <%=post.user_name%> •
+            </span>
+            <span>
+              <%=post.created_at.strftime("%y-%m-%d %H:%M:%S")%>
+            </span>
+            <span >
+              <a data-no-turbolink="" href="/posts/<%=post.id%>/show_last#reply<%=post.replies_count.nil? ? 0:post.replies_count%>" class="post_reply_conut"><%=post.replies_count.nil? ? 0:post.replies_count%></a>
+            </span>
+          </div>
+        </div>
+      </div>
+    <%end%>
+    <div class="digg_pagination pageTurn">
+      <%=will_paginate @my_posts,:previous_label=>'上一页',:next_label=>'下一页'%>
+    </div>
+  <%end%>
+</div>

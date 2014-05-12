@@ -1,0 +1,57 @@
+<script src="/assets/common/jquery.Jcrop.min.js"></script>
+<link href="/assets/jquery.Jcrop.min.css"/>
+<script language="Javascript">
+  <!--
+  jQuery(function($){
+
+    // Create variables (in this scope) to hold the API and image size
+    var jcrop_api, boundx, boundy;
+    $('#cropbox').Jcrop({
+      setSelect: [0,0,176,176],
+      boxWidth:298,
+      minSize:[176,176],
+      borderOpacity:0.3,
+      dragEdges:true,
+      allowSelect:true,
+      allowResize:true,
+      bgOpacity:0.6,
+      aspectRatio:1,
+      allowMove:true,
+      addClass: 'jcrop-handle',
+      onChange: updateCoords,
+      onSelect: updateCoords
+    },
+    function(){
+      jcrop_api = this;
+    });
+    function updateCoords(c)
+    {
+
+      $('#img_x').val(c.x);
+      $('#img_y').val(c.y);
+      $('#img_w').val(c.w);
+      $('#img_h').val(c.h);
+    };
+    function checkCoords()
+    {
+      if (parseInt($('#w').val())) return true;
+      alert('请选择裁剪区域');
+      return false;
+    };
+  });
+  -->
+</script>
+<%= form_for :users,:url => {:action => :update_avatar,:controller => :users},:html=>{:multipart => true,:method => :post,} do |f| %>
+  <div class="avater_imgBox"><img src="<%=  @src %>" id="cropbox"/></div>
+  <div style="text-align: center;margin-left: -20px;">
+    <button type="submit" class="confirm_btn" style="padding:10px; display: inline-block; margin: 5px 15px"> 确定 </button>
+    <button type="button" class="confirm_btn" onclick=" cancel_upload()" style="padding:10px; display: inline-block;margin: 5px 15px"> 取消 </button>
+  </div>
+
+  <div style="display: none">
+    <input type="hidden" id="img_x" name="x" value="" />
+    <input type="hidden" id="img_y" name="y" value="" />
+    <input type="hidden" id="img_w" name="w" value=""/>
+    <input type="hidden" id="img_h" name="h" value=""/>
+  </div>
+<% end %>

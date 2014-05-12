@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TechnologyStream</title>
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+<% flash.each do |name, msg| %>
+      <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
+        <div style="font-size:20px;margin: 200px auto;width: 300px;background: #3696E0;padding: 20px;">
+          <span class="close" id="close_flash" style="float:right;"  onclick="close_flash()" ></span>
+          <div class="alert_h"><%=msg%></div>
+        </div>
+      </div>
+    <% end %>
+    <div class="all">
+      <%=render 'layouts/top'%>
+      <div class="sessions">
+
+        <%= yield %>
+
+      </div>
+    </div>
+
+  </body>
+</html>

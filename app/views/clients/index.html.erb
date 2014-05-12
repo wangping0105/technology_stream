@@ -1,0 +1,127 @@
+<div class="user_info_list">
+  <ul class="nav">
+    <%=render 'ul_nav'%>
+  </ul>
+  <div class="div0 d0">
+    <div class="userinfo">
+      <span class="userinfo_img">
+        <img src="<%=@target_user.avatar_url%>" />
+      </span>
+      <ul>
+        <li>
+          <label>&nbsp;
+          </label>
+          <span>
+            第<%=@target_user.id%>名会员<span id="user_status"><%=@target_user.status ? '（冻结状态）':''%></span>
+          </span>
+        </li>
+        <li>
+          <label>
+            Name：
+          </label>
+          <span>
+            <%=@target_user.name%>
+          </span>
+        </li>
+        <%unless @target_user.sex.nil?%>
+          <li>
+            <label>
+              性别：
+            </label>
+            <span>
+              <%=User::SEX_NAME[@target_user.sex]%>
+            </span>
+          </li>
+        <%end%>
+        <li>
+          <label>
+            QQ：
+          </label>
+          <span>
+            <%=@target_user.qq%>
+          </span>
+        </li>
+        <%unless @target_user.location.blank?%>
+          <li>
+            <label>
+              城市：
+            </label>
+            <span>
+              <%=@target_user.location%>
+            </span>
+          </li>
+        <%end%>
+        <li>
+          <label>
+            email：
+          </label>
+          <span>
+            <%=@target_user.email%>
+          </span>
+        </li>
+        <%unless @target_user.website.blank?%>
+          <li>
+            <label>
+              个人网站：
+            </label>
+            <span>
+              <%=@target_user.website%>
+            </span>
+          </li>
+        <%end%>
+      </ul>
+    </div>
+    <%if current_user.admin?%>
+      <div >
+        <button id="freeze_user" onclick="freeze_user(<%=@target_user.id%>)">
+          <%=@target_user.status ? '解冻该会员':'冻结该会员'%>
+          </button>
+      </div>
+    <%end%>
+  </div>
+  <%unless @target_user.remark.nil?%>
+    <div class="div0 div1">
+      <%=@target_user.remark%>
+    </div>
+  <%end%>
+  <div class="div0 div1">
+    <h1>备受大家喜爱的帖子</h1>
+    <div>
+      <ul class="like">
+        <%@liked_posts.each do |like_post|%>
+          <li>
+            <%=like_post.node_name%>
+            <%=link_to like_post.title, post_path(like_post.id),:'data-no-turbolink'=>""%>
+            <%if like_post.cream %>
+              <i class="icon small_cert_on" title="精华贴"></i>
+            <%end%>
+            <span>
+              <%=like_post.praises_count.nil? ? 0:like_post.praises_count%>人喜欢,
+              <%=like_post.replies_count.nil? ? 0:like_post.replies_count%>条回复
+            </span>
+          </li>
+        <%end%>
+      </ul>
+    </div>
+  </div>
+  <div class="div0 div1">
+    <h1>最近回复的帖子</h1>
+    <div>
+      <ul>
+        <%@replyed_posts.each do |reply|%>
+          <li>
+            <div class="title">
+              <%=link_to reply.post_title , post_path(reply.post_id),:'data-no-turbolink'=>""%>
+              <span>
+                at <%=reply.created_at.strftime("%y-%m-%d %H:%M:%S")%>
+              </span>
+            </div>
+            <div class="body">
+              <%= raw reply.content%>
+            </div>
+          </li>
+        <%end%>
+      </ul>
+    </div>
+  </div>
+</div>

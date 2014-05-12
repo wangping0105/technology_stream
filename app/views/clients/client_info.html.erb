@@ -1,0 +1,105 @@
+<div class="index-right_left_div">
+  <%=form_for(:user,url:user_path(current_user.id),method:'put',html:{id:"user_info_form"}) do%>
+    <fieldset >
+      <legend>个人资料设置</legend>
+      <ul>
+        <li>
+          <label>Name：</label>
+          <div>
+            <input name="user_name" value="<%=current_user.name%>"/>
+          </div>
+        </li>
+        <li>
+          <label>性别：</label>
+          <div>
+            男 <input style="width: 30px;" type="radio" name="user_sex" value="0" <%=(current_user.sex == 0 ||current_user.sex.nil?) ? 'checked':''%>/>
+            女 <input style="width: 30px;" type="radio" name="user_sex" value="1" <%=current_user.sex == 1 ? 'checked':''%>/>
+          </div>
+        </li>
+        <li>
+          <label>QQ：</label>
+          <div>
+            <input name="user_qq" value="<%=current_user.qq%>"/>
+          </div>
+        </li>
+        <li>
+          <label>E-mail：</label>
+          <div>
+            <input name="user_email" value="<%=current_user.email%>" readonly/><span style="color: red;">*不可更改</span>
+          </div>
+        </li>
+        <li>
+          <label>website：</label>
+          <div>
+            <input name="user_website" placeholder="http://" value="<%=current_user.website%>"/>
+          </div>
+        </li>
+        <li>
+          <label>城市：</label>
+          <div>
+            <select onchange="address_search_city(this)">
+              <%@provinces.each do |pro|%>
+                <option value="<%=pro.code%>" <%=(@city.provincecode==pro.code ? 'selected':'') if @city%> ><%=pro.name%></option>
+              <%end%>
+            </select>
+            省
+            <select name="city_name" id="city_id">
+              <option value="0">------</option>
+              <%@cites.each do |city|%>
+                <option value="<%=city.code%>" <%=(city.code==current_user.location.to_i ? 'selected':'')if @city%>><%=city.name%></option>
+              <%end %>
+            </select>
+            市
+          </div>
+        </li>
+        <li>
+          <label>备注：</label>
+          <div>
+            <input name="user_remark" value="<%=current_user.remark%>"/>
+
+          </div>
+        </li>
+        <li>
+          <label>&nbsp;</label>
+          <div>
+            <button type="button" onclick="submit_user_info_submit(this)">更新资料</button>
+          </div>
+        </li>
+      </ul>
+    </fieldset>
+  <%end%>
+</div>
+<div class="index-right_left_div">
+  <%=form_for(:user,url:change_pwd_users_path,html:{id:"user_info_pwd_form"}) do%>
+    <fieldset >
+      <legend>修改密码</legend>
+      <ul>
+        <li>
+          <label>输入原密码：</label>
+          <div>
+            <input type="password" name="old_pwd"  />
+          </div>
+        </li>
+        <li>
+          <label>输入新密码：</label>
+          <div>
+            <input type="password" name="new_pwd"  />
+          </div>
+        </li>
+        <li>
+          <label>确认新密码：</label>
+          <div>
+            <input type="password" name="com_new_pwd" />
+          </div>
+        </li>
+        <li>
+          <label>&nbsp;</label>
+          <div>
+            <button type="button" onclick="submit_pwd(this)">修改密码</button>
+          </div>
+        </li>
+      </ul>
+
+    </fieldset>
+  <%end%>
+</div>
