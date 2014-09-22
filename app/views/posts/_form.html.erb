@@ -6,7 +6,7 @@
     window.editor = K.create('#k_editor_id', {
       width : '100%',
       minWidth : '380px',
-      items : ['source',
+      items : [
         'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
         'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
       afterCreate : function() {
@@ -18,6 +18,7 @@
     });
   });
 </script>
+
 <%=form_for(@post) do |f|%>
   <div class="index-right_left_div" >
     <%=f.text_field :title,placeholder:"填写标题",style:"border: 1px solid #CCCCCC;width:100%;text-align:center;line-height: 2;font-size: 15px;"%>
@@ -28,7 +29,10 @@
     <div class="index-right_left_div">
       <textarea id="k_editor_id" name="post[content]"style="width: 556px; height: 345px;border-color:#807E7E"><%=@post.content if !@post.nil?%></textarea>
     </div>
+    <div class="index-right_left_div">
+      标签：<input name="post[tags]" style="width:500px;" value="<%=@tags  if !@post.nil?%>"/>(标签请用";"隔开)
+    </div>
     <div style=" text-align: center;">
       <button   class="send_post" onclick="send_post(this)" type="button">发    表</button>
     </div>
-  <%end%>
+<%end%>

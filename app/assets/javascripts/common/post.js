@@ -5,13 +5,22 @@ function send_post(obj){
         alert("标题不能为空！");
         return false;
     }
-    if(title.length > 250){
-        alert("标题长度不能大于250！");
+    if(title.length > 30){
+        alert("标题长度不能大于30！");
         return false;
     }
     var content = $.trim($(form).find("textarea[name='post[content]']").val());
     if(content == ""){
         alert("内容不能为空！");
+        return false;
+    }
+    var tag = $.trim($(form).find("input[name='post[tags]']").val());
+    if(tag == ""){
+        alert("标签内容不能为空！");
+        return false;
+    }
+    if(tag.split(";").length >4){
+        alert("标签不能大于3个！");
         return false;
     }
     form.submit();
@@ -21,6 +30,10 @@ function send_post(obj){
 function create_reply(obj){
     var form = $(obj).parents("form");
     var content = form.find("#k_editor_id").val();
+    if(content.length>150){
+        alert("内容长度不能大于150！");
+        return false;
+    }
     if($.trim(content).length==0){
         alert("回复内容不能为空！");
         return false;
@@ -51,8 +64,8 @@ function commit_reply(obj){
         alert("内容不能为空！");
         return false;
     }
-    if(content.length>250){
-        alert("长度不能大于250！");
+    if(content.length>150){
+        alert("长度不能大于150！");
         return false;
     }
         
@@ -84,16 +97,57 @@ function show_messages()
             }
         }
     });
+   
     setTimeout("show_messages()",60000);
+}
+
+
+function show_recommend(){
+    $.ajax({
+        url:"/messages/user_recommend",
+        dataType:"json",
+        success:function(data){
+            if(data.commend_posts.length > 0){
+                $("#recommend_post").html("");
+                $.each(data.commend_posts, function(key,value){
+                    var i='';
+                    if(value.cream==1){
+                        i='<i class="icon small_cert_on" title="精华贴"></i>';
+                    }
+                    var str = "<li><a data-no-turbolink href='/posts/"+value.id+"'>"+value.title+"</a>"+i+"</li>"
+                    $("#recommend_post").append(str);
+                });
+            }
+
+        }
+
+    });
+}
+function show_k_means(){
+    $.ajax({
+        url:"/messages/k_means",
+        dataType:"json",
+        success:function(data){
+            $("#all_like_post").html("");
+            $.each(data.all_like_posts, function(key,value){
+                var i='';
+                if(value.cream==1){
+                    i='<i class="icon small_cert_on" title="精华贴"></i>';
+                }
+                var str = "<li><a data-no-turbolink href='/posts/"+value.id+"'>"+value.title+"</a>"+i+"</li>"
+                $("#all_like_post").append(str);
+            });
+        }
+    });
 }
 
 function show_node_list(obj){
     
-    if($(obj).find(".node_area").css("display")=='none'){
+    if($(obj).parent().find(".node_area").css("display")=='none'){
         $(".node_list").find(".node_area").hide();
-        $(obj).find(".node_area").show(100);
+        $(obj).parent().find(".node_area").show(100);
     }else{
-        $(obj).find(".node_area").hide(100);
+        $(obj).parent().find(".node_area").hide(100);
     }
    
 }

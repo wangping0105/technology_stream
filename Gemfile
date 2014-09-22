@@ -5,7 +5,12 @@ gem 'rails', '4.0.0'
 gem "mini_magick", "3.5.0" #handle image
 #gem 'carrierwave', "0.5.8" #upload image
 gem 'bootstrap-sass', '2.3.2.0'
-gem 'mysql2'
+gem 'rake', '~> 10.3.1'
+#kmeans聚类
+gem 'kmeans'
+gem 'rmagick'
+
+gem 'mysql2','0.3.10'
 gem 'remotipart', '~> 1.2' #ajax upload fileui
 gem 'bcrypt-ruby', '3.0.1'
 gem 'sass-rails', '~> 4.0.0'
@@ -15,7 +20,7 @@ gem 'coffee-rails', '~> 4.0.0'
 #markdown
 gem 'redcarpet'
 gem 'albino'
-gem 'nokogiri'
+#gem 'nokogiri'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 

@@ -104,7 +104,7 @@ class UsersController < ApplicationController
       end
       if size<img["width"]
         w=(params[:w].to_i)
-        h=(params[:h].to_i)
+        h=(params[:h].to_i>img["height"]? img["height"]:params[:h].to_i)
         x=(params[:x].to_i)
         y=(params[:y].to_i)
         img.run_command("convert #{file_path} -crop #{w}x#{h}+#{x}+#{y} #{file_paths}")

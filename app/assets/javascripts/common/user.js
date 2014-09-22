@@ -44,9 +44,13 @@ function submit_user_info_submit(){
       return false;
     }
     var user_qq = $("#user_info_form").find("input[name=user_qq]").val();
-    var phoneReg =/[0-9]/;
-    if(!phoneReg.test($.trim(user_qq))){
+    var phoneReg =/^[0-9]*$/;
+    if(!$.trim(user_qq).match(phoneReg)){
       alert('qq请输入数字');
+      return false;
+    }
+    if(user_qq.length>10){
+      alert('qq不能大于10位');
       return false;
     }
     var user_website = $("#user_info_form").find("input[name=user_website]");
@@ -70,7 +74,6 @@ function submit_pwd(obj){
     }
     var new_pwd = $("#user_info_pwd_form").find("input[name=new_pwd]").val();
     var com_new_pwd = $("#user_info_pwd_form").find("input[name=com_new_pwd]").val();
-    alert(com_new_pwd);
     if(new_pwd==""){
         alert("新密码不能为空");
         return false;

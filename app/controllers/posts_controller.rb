@@ -1,8 +1,12 @@
 #encoding:utf-8
 class PostsController < ApplicationController
-  before_action :get_nodes,:store_location,:signed_in_user?
-  skip_before_action :signed_in_user?, :only => [:index,:all_index,:show,:show_last,:diff_categories_post,:no_reply,:popular,:last_created]
+  before_action :get_nodes,:signed_in_user?
+  after_action :setting_post ,:only =>  [:collection_post,:dis_collection_post,:dis_collection_post_in_user_info,:praise_post,:dis_praise_post,:attention_post,:dis_attention_post]
+  skip_before_action :signed_in_user?, :only => [:search_posts,:index,:all_index,:show,:show_last,:diff_categories_post,:no_reply,:popular,:last_created]
   skip_before_filter :verify_authenticity_token, :only => [:create_reply_again]
+  #记录浏览时间
+  before_action :end_calculate_time
+  skip_before_action :end_calculate_time,:only=>[:create_reply_again,:create_reply,:show,:collection_post,:dis_collection_post,:dis_collection_post_in_user_info,:praise_post,:dis_praise_post,:attention_post,:dis_attention_post]
   def index
     @posts = Post::get_posts(1,nil,nil,nil,1,nil)[:details_posts]
   end
@@ -43,9 +47,14 @@ class PostsController < ApplicationController
     @post = Post::get_posts(1,params[:id],nil,nil,nil,nil)[:details_posts][0]
     @replies = Reply::get_replies(@post.id,params[:page])[:details_replies]
     @last_count = (page-1)*Reply::PER_PAGE
+    #得到再回复
     reply_ids = @replies.map(&:id)
     reply_agains = ReplyAgain::get_reply_again(reply_ids)
     @reply_again_gruops = reply_agains.group_by{|s| s.reply_id}
+    if current_user&&current_user.admin?
+      @post_infos =get_reply_count (params[:id])
+    end
+    get_tags_form(params[:id])
     if current_user
       collections = Collection.where("post_id = ? and user_id=?  ",params[:id],current_user.id )
       praises = Praise.where("post_id = ? and user_id=?   ",params[:id],current_user.id)
@@ -70,6 +79,10 @@ class PostsController < ApplicationController
     reply_ids = @replies.map(&:id) 
     reply_agains = ReplyAgain::get_reply_again(reply_ids)
     @reply_again_gruops = reply_agains.group_by{|s| s.reply_id}
+    if current_user&&current_user.admin?
+      @post_infos = get_reply_count (params[:id])
+    end
+    get_tags_form(params[:id])
     if current_user
       collections = Collection.where("post_id = ? and user_id=?  ",params[:id],current_user.id )
       praises = Praise.where("post_id = ? and user_id=?   ",params[:id],current_user.id)
@@ -84,7 +97,11 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find(params[:id])
-  
+    tags = Tag.select("tags.id,tags.content").where("t.post_id = ?",@post.id).
+      joins("inner join tags_post_relations t on t.tag_id = tags.id")
+    @tags = tags.map(&:content).join(";")
+    
+    
   end
   def update
     @post = Post.find(params[:id])
@@ -92,6 +109,8 @@ class PostsController < ApplicationController
       @post.update_attributes(title:params[:post][:title],
         content:params[:post][:content],
         node_id:params[:post][:node])
+      TagsPostRelation.destroy_all("post_id = #{@post.id}")
+      add_tag_to_post params[:post][:tags].strip,@post
       flash[:success] = '更新成功！'
       redirect_to post_path(@post)
     else
@@ -103,7 +122,7 @@ class PostsController < ApplicationController
     title = params[:post][:title].strip
     node_id = params[:post][:node]
     content = params[:post][:content]
-    post = Post.new do |p|
+    @post = Post.new do |p|
       p.title = title
       p.node_id = node_id
       p.content = content
@@ -113,17 +132,23 @@ class PostsController < ApplicationController
       p.collections_count = 0
       p.praises_count = 0
       p.attentions_count = 0
-
     end
-    if post.save
+    p = Post.where("title = ? and created_at > ?",title,(Time.now-3600))
+    if p.blank? && @post.save
+      add_tag_to_post params[:post][:tags].strip,@post
       flash[:success] = '帖子创建成功！'
-      redirect_to post_path(post)
+      redirect_to post_path(@post)
+    elsif !p.blank?
+      flash[:error] = '帖子创建失败！短时间内标题不能重复'
+      render 'new'
     else
       flash[:error] = '帖子创建失败！'
       render 'new'
     end
 
   end
+
+  
 
   def destroy
     post = Post.find_by_id(params[:id])
@@ -145,7 +170,7 @@ class PostsController < ApplicationController
         post_id:post_id,
         user_id:current_user.id)
       flash[:success] = '回复成功！'
-      if post.user_id != current_user.id
+      if post.user_id != current_user.id 
         Message.create(content:content,
           post_id:post_id,
           target_user_id:post.user_id,
@@ -153,11 +178,35 @@ class PostsController < ApplicationController
           status:Message::STATUS[:no_read],
           types:Message::TYPRS[:common])
       end
+      attens = Attention.where("post_id=?",post_id)
+      unless attens.blank?
+        attens.each do |a|
+          Message.create(content:content,
+            post_id:post_id,
+            target_user_id:a.user_id,
+            user_id:current_user.id,
+            status:Message::STATUS[:no_read],
+            types:Message::TYPRS[:attions])
+        end
+      end
       redirect_to post_path(post_id)
     else
       flash[:success] = '回复失败！'
       redirect_to post_path(post_id)
     end
+  end
+
+  def delete_reply
+    reply =  Reply.find_by_id(params[:reply_id])
+    reply.destroy
+    flash[:success] = '删除成功！'
+    redirect_to post_path(params[:id])
+  end
+  def delete_reply_again
+    reply =  ReplyAgain.find_by_id(params[:reply_again_id])
+    reply.destroy
+    flash[:success] = '删除成功！'
+    redirect_to post_path(params[:id])
   end
 
   def create_reply_again
@@ -172,7 +221,8 @@ class PostsController < ApplicationController
         reply_id:reply_id,
         user_id:current_user.id
       )
-      if post.user_id != current_user.id
+      post = Post.find_by_id(reply.post_id)
+      if target_user_id.to_i !=current_user.id
         Message.create(content:content,
           post_id:reply.post_id,
           user_id:current_user.id,
@@ -207,7 +257,7 @@ class PostsController < ApplicationController
   def dis_collection_post_in_user_info
     common_dis_collection params[:id],current_user.id
     flash[:success] = '您已取消收藏该贴'
-    redirect_to my_collections_clients_path(params[:id])
+    redirect_to my_collections_clients_path
   end
 
 
@@ -261,5 +311,30 @@ class PostsController < ApplicationController
     if collection
       collection.destroy
     end
+  end
+
+  def add_tag_to_post tags_str,post
+    tags_str.split(";").each do |tag|
+      tag_i = Tag.find_by_content(tag)
+      if tag_i
+        TagsPostRelation.create(post_id:post.id,tag_id:tag_i.id)
+      else
+        this_tag = Tag.create(content:tag)
+        TagsPostRelation.create(post_id:post.id,tag_id:this_tag.id)
+      end
+    end
+  end
+  def get_tags_form(post_id)
+    @tags = Tag.select("tags.id,tags.content").where("t.post_id = ?",post_id).
+      joins("inner join tags_post_relations t on t.tag_id = tags.id")
+  end
+  def get_reply_count post_id
+    user_record = UserReadRecord.where("post_id = ?" , post_id)
+    reading_count = user_record.length
+    reading_time = 0
+    user_record.each do |u_r|
+      reading_time+=u_r.times
+    end
+    {reading_count:reading_count,reading_time:reading_time}
   end
 end

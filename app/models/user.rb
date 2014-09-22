@@ -27,5 +27,6 @@ class User < ActiveRecord::Base
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
       self.avatar_url = TEAVHER_URL
+      self.status = 0
     end
 end

@@ -18,10 +18,12 @@
                 <i class="icon small_cert_on" title="精华贴"></i>
               <%end%>
             </label>
-            <span  ><%=link_to 'X',dis_collection_post_in_user_info_post_path(like_post.id),id:"user_info_close",title:'取消收藏帖子'%></span>
+            <%if current_user == @target_user%>
+              <span  ><%=link_to 'X',dis_collection_post_in_user_info_post_path(like_post.id),id:"user_info_close",title:'取消收藏帖子'%></span>
+            <%end%>
             <span style="text-align: right;
-margin-top: 0px;
-width: 100%">
+                  margin-top: 0px;
+                  width: 100%">
               <label id="post_name">
                 作者:<%=like_post.user_name%>
               </label>

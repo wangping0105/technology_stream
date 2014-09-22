@@ -5,7 +5,7 @@
     window.editor = K.create('#k_editor_id', {
       width : '100%',
       minWidth : '370px',
-      items : ['source',
+      items : [
         'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
         'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
       afterCreate : function() {
@@ -18,7 +18,7 @@
     K.create('#reply_text_area', {
       width : '100%',
       minWidth : '370px',
-      items : ['source',
+      items : [ 
         'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
         'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
       afterCreate : function() {
@@ -30,19 +30,21 @@
     });
   });
 </script>
+<%begin_calculate_time @post.id%>
 <div class="index-right_left_div">
   <a href="/">Home</a>/<%=@post.section_name%>/<%=link_to @post.node_name,diff_categories_post_post_path(@post.node_id)%>
 </div>
 <div class="index_main_post index-right_left_div">
 
   <h1><%=@post.title%></h1>
-  <span class="index_main_post_span">*<%=@post.user_name%>*于<%=@post.created_at.to_s[0...16]%>发布</span>
+  <span class="index_main_post_span">*<%=link_to @post.user_name,clients_path(@post.user_id)%>*于<%=@post.created_at.to_s[0...16]%>发布</span>
   <div class="post_content">
-    <%= raw(markdown(@post.content))%>
-
+    <%= raw((@post.content))%>
   </div>
-  <%if signed_in?%>
-    <div class="post_dispose">
+
+
+  <div class="post_dispose">
+    <%if check_authority && @post.user_id != current_user.id%>
       <span>
         <%unless @praise_ids.include?(current_user.id)%>
           <%=link_to '赞',praise_post_post_path(@post.id),:'data-no-turbolink'=>""%>
@@ -58,9 +60,7 @@
         <%end%>
 
       </span>
-      <span>
-        <%= link_to '编辑',edit_post_path(@post),:'data-no-turbolink'=>""%>
-      </span>
+
       <span>
         <%unless @attention_ids.include?(current_user.id)%>
           <%=link_to '关注',attention_post_post_path(@post.id),:'data-no-turbolink'=>""%>
@@ -68,13 +68,25 @@
           <%=link_to '取消关注',dis_attention_post_post_path(@post.id),:'data-no-turbolink'=>""%>
         <%end%>
       </span>
-      <%if current_user.admin?%>
-        <span>
-          <%=link_to '删除',post_path(@post),method: :delete,confirm:'确认删除？'%>
-        </span>
-      <%end%>
+    <%end%>
+    <%if  check_authority  &&  @post.user_id ==current_user.id%>
+      <span>
+        <%=link_to '删除',post_path(@post),method: :delete,confirm:'确认删除？'%>
+      </span>
+    <%end%>
+    <%if current_user &&(@post.user_id == current_user.id || current_user.admin?)%>
+      <span>
+        <%= link_to '编辑',edit_post_path(@post),:'data-no-turbolink'=>""%>
+      </span>
+    <%end%>
+
+    <div style="display: inline-block;color: #666;">#
+      <%@tags.each do |tag|%>
+        <span><%=tag.content%></span>
+      <%end%>#
     </div>
-  <%end%>
+  </div>
+
 </div>
 <div class="reply_area index-right_left_div">
   <h2>
@@ -102,6 +114,9 @@
           <%if signed_in?%>
             <span class="opts">
               <a class="icon small_reply" data-floor="1" data-login="tdseed"  onclick="show_reply(this,<%=reply.id%>,<%=reply.user_id%>,0)" title="回复此楼"></a>
+              <%if check_authority && (@post.user_id == current_user.id || current_user.admin?)%>
+                <a  style="background: url('/assets/icon_img.png') 0px -60px no-repeat;margin-top: -18px;margin-left: 0px;width: 12px;height: 12px;display: inline-block;"  data-confirm="确认删除？" href="/posts/<%=@post.id%>/delete_reply?reply_id=<%=reply.id%>"></a>
+              <%end%>
             </span>
           <%end%>
         </div>
@@ -126,6 +141,9 @@
               <%if signed_in?%>
                 <span class="opts">
                   <a class="icon small_reply" data-floor="1" data-login="tdseed"  onclick="show_reply(this,<%=reply.id%>,<%=reply_again.user_id%>,1)" title="回复此楼"></a>
+                  <%if check_authority  && (@post.user_id == current_user.id || current_user.admin?)%>
+                    <a  style="background: url('/assets/icon_img.png') 0px -60px no-repeat;margin-top: -18px;margin-left: 0px;width: 12px;height: 12px;display: inline-block;"  data-confirm="确认删除？" href="/posts/<%=@post.id%>/delete_reply_again?reply_again_id=<%=reply_again.id%>"></a>
+                  <%end%>
                 </span>
               <%end%>
             </div>
@@ -142,7 +160,7 @@
   </div>
 
 </div>
-<%if signed_in?%>
+<%if check_authority%>
   <div class="reply_area index-right_left_div">
     <%=form_for(:posts,url:create_reply_post_path(@post)) do |f|%>
       <input type="hidden" name="post_id" value="<%=@post.id%>" />

@@ -18,10 +18,10 @@
           </div>
           <div class="post_info">
             <span>
-              <%=post.node_name%> •
+              <%=link_to post.node_name,diff_categories_post_post_path(post.node_id),class:'post_list_user_name'%> •
             </span>
             <span>
-              <%=post.user_name%> •
+              <%=link_to post.user_name,clients_path(post.user_id),class:'post_list_user_name'%> •
             </span>
             <span>
               <%=post.created_at.strftime("%y-%m-%d %H:%M:%S")%>

@@ -47,7 +47,7 @@
               城市：
             </label>
             <span>
-              <%=@target_user.location%>
+              <%=@city.name%>
             </span>
           </li>
         <%end%>
@@ -71,7 +71,7 @@
         <%end%>
       </ul>
     </div>
-    <%if current_user.admin?%>
+    <%if current_user && current_user.admin?%>
       <div >
         <button id="freeze_user" onclick="freeze_user(<%=@target_user.id%>)">
           <%=@target_user.status ? '解冻该会员':'冻结该会员'%>

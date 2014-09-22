@@ -9,6 +9,6 @@
 <li class="<%= controller.action_name == 'my_collections' ? 'hover':''%>">
   <%=link_to '收藏',my_collections_clients_path(@target_user.id)  %>
 </li>
-<li class="<%= controller.action_name == 'my_diaries' ? 'hover':''%>">
+<li class="<%= controller.action_name == 'my_diaries' ? 'hover':''%>" style="display:none;">
   <%=link_to '日志本',my_diaries_clients_path(@target_user.id)  %>
 </li>

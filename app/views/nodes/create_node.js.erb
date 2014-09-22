@@ -1,4 +1,5 @@
 <%if @msg=="添加成功"%>
 $("#nodes").html('<%=j(render 'nodes')%>');
+$("#node_list_are").html('<%=j(render 'layouts/node_list')%>');
 <%end%>
 alert("<%=@msg%>");

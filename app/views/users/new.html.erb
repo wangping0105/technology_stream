@@ -85,9 +85,13 @@
   function checkQQ(){
     flg=true;
     var phone = document.getElementById('users_qq').value;
-    var phoneReg =/[0-9]/;
-    if(!phoneReg.test(phone)){
+    var phoneReg =/^[0-9]*$/;
+    if(!$.trim(phone).match(phoneReg)){
       alert('qq请输入数字');
+      return false;
+    }
+    if(phone.length>10){
+      alert('qq不能大于10位');
       flg=false;
     }
 

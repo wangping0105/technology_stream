@@ -14,11 +14,23 @@ module ApplicationHelper
     syntax_highlighter(@markdown.render(html)).html_safe
   end
   def syntax_highlighter(html)
+=begin
     doc = Nokogiri::HTML(html)
     doc.search("//pre[@lang]").each do |pre|
       pre.replace Albino.colorize(pre.text.rstrip, pre[:lang])
     end
     doc.to_s
+=end
+  end
+
+  def begin_calculate_time post_id
+    if signed_in?
+      unless !session[:last_controller].blank?&&!session[:beigin_time].nil?&&!session[:post_id].nil?
+        session[:last_controller] = request.fullpath
+        session[:beigin_time] = Time.now
+        session[:post_id] = post_id
+      end
+    end
   end
   
   

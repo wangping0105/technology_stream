@@ -12,9 +12,17 @@
         <div class="user_post_area">
           <div class="post_title">
             <span>
-              <%=  message.user_name%> 在
+              <%=link_to message.user_name,clients_path(message.user_id)%>在
+              <%if message.types==Message::TYPRS[:attions]%>
+                您关注的帖子
+              <%end%>
             </span>
-            <%=link_to message.post_title , post_path(message.post_id),:'data-no-turbolink'=>""%>中回复了您
+            <%=link_to message.post_title , post_path(message.post_id),:'data-no-turbolink'=>""%>
+            <%if message.types==Message::TYPRS[:attions]%>
+              中进行了的回复
+            <%else%>
+              中回复了您
+            <%end%>
           </div>
           <div class="reply-content">
             <span>
@@ -22,7 +30,7 @@
             </span>
           </div>
           <div class="post_info">
-            
+
             <span>
               <%=  message.created_at.strftime("%y-%m-%d %H:%M:%S")%>
             </span>

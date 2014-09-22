@@ -21052,8 +21052,8 @@ function send_post(obj){
         alert("标题不能为空！");
         return false;
     }
-    if(title.length > 250){
-        alert("标题长度不能大于250！");
+    if(title.length > 30){
+        alert("标题长度不能大于30字！");
         return false;
     }
     var content = $.trim($(form).find("textarea[name='post[content]']").val());

@@ -1,4 +1,4 @@
-<div class="index-left">
+<div class="index-left default">
   <div>欢迎您！
     <%unless current_user.nil?%>
       <%if current_user.admin?%>
@@ -33,31 +33,25 @@
           <div style="margin-top:10px;margin-left: 30px; "><%=link_to '注册' , new_user_path%></div>
         <%else%>
           <div style="min-height: 55px;">
-            <%=link_to current_user.name,"#"%>(<%=User::SEX_NAME[current_user.sex]%>)<br/>
-            <%=current_user.remark%>
+            <%=link_to current_user.name,"#"%>
+            <%if !current_user.sex.nil?%>
+            (<%=User::SEX_NAME[current_user.sex]%>)
+            <%end%>
+            <br/>
+            <%=current_user.status ? '[冻结状态]':''%><br/><%=current_user.remark%>
           </div>
           <div style="margin-top:10px;margin-left: 30px; "><%=link_to '注销登录' , destroy_user_users_path,:'data-no-turbolink'=>""%></div>
         <%end%>
       </li>
     </ul>
   </div>
-  <%unless current_user.nil? %>
+  <%if check_authority %>
     <div class="align_middle">
       <%=link_to '发帖子',new_post_path,class:"green_btn",:'data-no-turbolink'=>""%>
       </div>
     <%end%>
-    <div style="overflow: auto;height: 460px;margin-top: 10px;">
-      节点列表
-      <%@nodeses.each do |section,nodes|%>
-        <div class="node_list" onclick="show_node_list(this)">
-          <div ><h1 style="font-size: medium;"><%=section_name(@sections,section)%></h1></div>
-          <div class="node_area">
-            <%nodes.each do |node|%>
-              <div> &nbsp;<%=link_to node.name,diff_categories_post_post_path(node.id)%></div>
-            <%end%>
-          </div>
-        </div>
-      <%end%>
+    <div id="node_list_are" style="overflow: auto;height: 460px;margin-top: 10px;">
+     <%=render 'layouts/node_list'%>
     </div>
   </div>
 

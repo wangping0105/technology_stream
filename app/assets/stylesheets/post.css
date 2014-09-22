@@ -19,7 +19,13 @@
 .post_content{
     width: 100%;
     margin-top:5;
+    word-wrap:break-word;
 }
+.post_content img{
+    max-width: 600px;
+}
+
+
 .index_main_post_span{
     border-bottom:1px solid  #DDD;
     padding: 5px;
@@ -148,7 +154,12 @@
     position: relative;
     margin-bottom: 10px;
 }
-
+.post_info .post_list_user_name{
+    color: #999;
+}
+.post_info .post_list_user_name:hover{
+    color: blue;
+}
 .sorts {
     font-size: 13px;
     text-align: right;

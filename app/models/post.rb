@@ -9,8 +9,8 @@ class Post < ActiveRecord::Base
   
   def self.get_posts page, id =nil ,node_id =nil,section_id =nil,cream =nil,status =nil
     base_sql ="
-    select p.id,p.title,p.content,p.status,p.cream,p.replies_count,p.praises_count,p.collections_count,
-p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u.avatar_url,
+    select p.id,p.title,p.content,p.user_id,p.status,p.cream,p.replies_count,p.praises_count,p.collections_count,
+p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u.id user_id ,u.avatar_url,
     n.name node_name,n.id node_id,n.posts_count,s.name section_name from posts p
     left join users u on p.user_id=u.id
     left join nodes n on p.node_id = n.id
@@ -48,8 +48,8 @@ p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u
   def self.get_repliest_post page
     base_sql ="
     select p.id,p.title,p.content,p.status,p.cream,p.replies_count,p.praises_count,p.collections_count,
-    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,
-    u.avatar_url,n.name node_name ,s.name section_name from posts p
+    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u.id user_id ,
+    u.avatar_url,n.name node_name,n.id node_id ,s.name section_name from posts p
     left join users u on p.user_id=u.id
     left join nodes n on p.node_id = n.id
     left join sections s on n.section_id = s.id
@@ -65,8 +65,8 @@ p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u
   def self.get_no_reply_post page
     base_sql ="
     select p.id,p.title,p.content,p.status,p.cream,p.replies_count,p.praises_count,p.collections_count,
-    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,
-    u.avatar_url,n.name node_name ,s.name section_name from posts p
+    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u.id user_id ,
+    u.avatar_url,n.name node_name,n.id node_id ,s.name section_name from posts p
     left join users u on p.user_id=u.id
     left join nodes n on p.node_id = n.id
     left join sections s on n.section_id = s.id
@@ -82,8 +82,8 @@ p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u
   def self.get_search_post page,content
     base_sql ="
     select p.id,p.title,p.content,p.status,p.cream,p.replies_count,p.praises_count,p.collections_count,
-    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,
-    u.avatar_url,n.name node_name ,s.name section_name from posts p
+    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u.id user_id ,
+    u.avatar_url,n.name node_name ,n.id node_id,s.name section_name from posts p
     left join users u on p.user_id=u.id
     left join nodes n on p.node_id = n.id
     left join sections s on n.section_id = s.id
@@ -99,8 +99,8 @@ p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u
   def self.get_popular_post page
     base_sql ="
     select p.id,p.title,p.content,p.status,p.cream,p.replies_count,p.praises_count,p.collections_count,
-    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,
-    u.avatar_url,n.name node_name ,s.name section_name from posts p
+    p.attentions_count,p.browser_count,p.created_at,p.updated_at,u.name user_name ,u.id user_id ,
+    u.avatar_url,n.name node_name ,n.id node_id,s.name section_name from posts p
     left join users u on p.user_id=u.id
     left join nodes n on p.node_id = n.id
     left join sections s on n.section_id = s.id

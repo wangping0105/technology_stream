@@ -22,6 +22,9 @@
         <%end%>
       </ul>
     </div>
+    <div class="digg_pagination pageTurn">
+      <%=will_paginate @users,:previous_label=>'上一页',:next_label=>'下一页'%>
+    </div>
     <div>
       &nbsp;
     </div>
@@ -30,9 +33,9 @@
 <script>
   var i = <%=@users.length%>
   if(i!=1){
-  var height = 100 + (i-1) / 6 *84
-  $('.top_members_img').css({
-    height:height
-  });
+    var height = 100 + (i-1) / 7 *84
+    $('.top_members_img').css({
+      height:height
+    });
   }
 </script>

@@ -29,8 +29,8 @@
     </div>
     <div class="user_info_area"   style="padding-bottom: 5px;float: right;margin-top: -33px;margin-right: 60px;">
       <%if signed_in?%>
-        <div style="float:left;height: 20px;margin-right: 5px;" onmousemove="show_user_act(this)"  onmouseout="cancle_user_act(this)">
-          <%=link_to current_user.name,"#",style:'color:white;' %>
+        <div style="float:left;height: 20px;margin-right: 5px;" onclick="show_user_act(this)"  >
+          <%=link_to current_user.name,"javascript:void(0)",style:'color:white;' %>
           <ul class="user_act">
             <li><%=link_to '个人主页' ,clients_path%></li>
             <li><%=link_to '个人资料设置',client_info_clients_path  %></li>

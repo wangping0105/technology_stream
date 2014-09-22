@@ -1,11 +1,34 @@
 
-<div>
-  <h1>置顶话题</h1>
+<div class="show_tips">
+  <h1>小贴士</h1>
+  <span>
+    <%=@tip.content%>
+  </span>
 </div>
 <div>
+  <h1>近期热议话题</h1>
+  <ul id="all_like_post">
+
+  </ul>
+</div>
+<%unless current_user.nil?%>
+<div >
   <h1>你可能感兴趣的话题</h1>
+  <ul id="recommend_post">
+  </ul>
 </div>
-<div>
+<%end%>
+<div class="show_info">
   <h1>信息统计</h1>
+  <ul>
+    <li>会员数：<%=@users_count.count%></li>
+    <li>帖子数：<%=@posts_count.count%></li>
+    <li>回复数：<%=@replies_count.count%></li>
+    <%unless @post_infos.nil?%>
+       <li>当前帖子被浏览的人数：<%=@post_infos[:reading_count]%></li>
+       <li>当前帖子被浏览总时间：<%=@post_infos[:reading_time].to_i%>s</li>
+    <%end%>
+  </ul>
 </div>
+
 

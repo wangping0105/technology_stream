@@ -7,7 +7,7 @@
     <%= javascript_include_tag "common/jquery.Jcrop.min"%>
     <%= csrf_meta_tags %>
   </head>
-  <body>
+  <body >
     <% flash.each do |name, msg| %>
       <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
         <div style="font-size:20px;margin: 200px auto;width: 300px;background: #D8D8D8;padding: 20px;">
@@ -66,8 +66,10 @@
 
     </div>
     <script>
-      setTimeout("rejust_height()",200);
+      setTimeout("rejust_height()",300);
       show_messages();
+      show_recommend();
+      show_k_means();
     </script>
   </body>
 </html>

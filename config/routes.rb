@@ -18,7 +18,7 @@ TechnologyStream::Application.routes.draw do
   end
   resources :messages do
     collection do
-      get :show_messages,:show_messages_page,:empting_messages
+      get :show_messages,:show_messages_page,:empting_messages,:user_recommend,:k_means
     end
   end
   resources :posts do
@@ -30,7 +30,7 @@ TechnologyStream::Application.routes.draw do
       post :create_reply,:create_reply_again
       get :show_last,:collection_post,:dis_collection_post,:praise_post,
         :dis_praise_post,:attention_post,:dis_attention_post,:dis_collection_post_in_user_info,
-        :diff_categories_post
+        :diff_categories_post,:delete_reply,:delete_reply_again
     end
   end
   resources :sessions

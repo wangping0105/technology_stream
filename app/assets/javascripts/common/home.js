@@ -16,11 +16,15 @@ function rejust_height(){
     $(".index-left").css("height",$(".index-right").height()-20);
 }
 function show_user_act(obj){
-    $(".user_act").css({
-        "top":($(obj).offset().top+20)+"px",
-        "left":($(obj).offset().left-40)+"px"
-    })
-    $(".user_act").show();
+    if($(".user_act").css("display")=='none'){
+        $(".user_act").css({
+            "top":($(obj).offset().top+15)+"px",
+            "left":($(obj).offset().left-40)+"px"
+        })
+        $(".user_act").show();
+    }else{
+        $(".user_act").hide();
+    }
 }
 
 function cancle_user_act(obj){

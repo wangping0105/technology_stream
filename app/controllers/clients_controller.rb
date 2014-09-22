@@ -3,12 +3,14 @@ class ClientsController < ApplicationController
   before_action :get_nodes#,:signed_in_user?
   #skip_before_action :signed_in_user?, :only => [:top_100_members]
   PER_PAGE = 10
+  Client_Perpage =49
   def index
     if params[:format].nil?
       @target_user = current_user
     else
       @target_user = User.find_by_id(params[:format])
     end
+    @city = City.find_by_code(@target_user.location)
     @liked_posts = Post.select("posts.id,posts.title,posts.content,posts.status,posts.cream,
     posts.replies_count,posts.praises_count,posts.collections_count,
     posts.attentions_count,posts.browser_count,posts.created_at,
@@ -74,12 +76,11 @@ class ClientsController < ApplicationController
       @cites = City.where("provincecode = ?",@city.provincecode) if @city
     end
 
-    p 1111111,@cites,222
   end
 
   def top_100_members
     @user_count = User.select("count(*) count")
-    @users = User::all.limit(50);
+    @users = User::all.paginate(page:params[:page],per_page:Client_Perpage);
   end
 
   def search_citties

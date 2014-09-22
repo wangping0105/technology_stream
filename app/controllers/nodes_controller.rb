@@ -1,5 +1,6 @@
 #encoding:utf-8
 class NodesController < ApplicationController
+
   before_action :get_nodes,:signed_in_admin?
   def index
     @sections = Section.all
@@ -45,6 +46,7 @@ class NodesController < ApplicationController
       @msg="添加失败，已经存在节点名称"
     end
     @nodes = Node.where("section_id = ?",section_id)
+    get_nodes
   end
 
   
