@@ -8,7 +8,7 @@
         <ul>
           <li>
             <p><%= f.label :login, "帐号：" %>
-              <%= f.text_field :login, :placeholder =>"用户名或邮箱" %></p>
+              <%= f.text_field :login,value:@login, :placeholder =>"用户名或邮箱" %></p>
           </li>
 
           <li><%= f.label :password, "密码：" %>

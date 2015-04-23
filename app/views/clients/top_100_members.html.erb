@@ -15,7 +15,7 @@
 
             </span>
             <div>
-              <%=link_to user.name,clients_path(user.id)%>
+              <%=link_to limit_length(user.name,10),clients_path(user.id)%>
             </div>
 
           </li>

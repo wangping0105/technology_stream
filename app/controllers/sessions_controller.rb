@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
   end
   def create
     @user = User.find_by_email(params[:sessions][:login])||User.find_by_name(params[:sessions][:login])
+    @login = params[:sessions][:login]
     if @user && @user.authenticate(params[:sessions][:password])
       flash[:success] = '登录成功'
       sign_in @user

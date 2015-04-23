@@ -10,20 +10,24 @@
   </div>
   <div class="user_area">
     <ul>
-      <%= form_for :users,url:upload_avatar_users_path,:html => { :multipart => true }, :remote => true do |f| %>
-        <li class="user_img">
-          <img src="<%=current_user.nil? ? "/assets/guest.jpg":current_user.avatar_url%>" width="100" height="100"/>
-          <%unless current_user.nil? %>
-            <a href="javascript:void(0);" class="avater_a">
-              <span>修改头像</span>
-              <input  name="file_upload" id="file_uploads"type="file" onchange="upload_avatar(this)"/>
-            </a>
-          <%end%>
-        </li>
-        <li>
-          <input type="submit" id="submit_button" style="display: none;"value="www"/>
-        </li>
-      <%end%>
+      <li>
+        <%= form_for :users,url:upload_avatar_users_path,:html => { :multipart => true }, :remote => true do |f| %>
+          <ul>
+            <li class="user_img">
+              <img src="<%=current_user.nil? ? "/assets/guest.jpg":current_user.avatar_url%>" width="100" height="100"/>
+              <%unless current_user.nil? %>
+                <a href="javascript:void(0);" class="avater_a">
+                  <span>修改头像</span>
+                  <input  name="file_upload" id="file_uploads"type="file" onchange="upload_avatar(this)"/>
+                </a>
+              <%end%>
+            </li>
+            <li>
+              <input type="submit" id="submit_button" style="display: none;"value="www"/>
+            </li>
+          </ul>
+        <%end%>
+      </li>
       <li class="avater" id="changes_avatar" style="z-index: 99;display:none;position: absolute;left: 258px;top: 47px;background: #fff;width: 330px;height: 396px;  ">
 
       </li> 
@@ -32,10 +36,10 @@
           <div style="margin-top:20px;margin-left: 30px; "> <%=link_to '登录' , sessions_path %></div>
           <div style="margin-top:10px;margin-left: 30px; "><%=link_to '注册' , new_user_path%></div>
         <%else%>
-          <div style="min-height: 55px;">
+          <div style="min-height: 55px;min-width: 110px;">
             <%=link_to current_user.name,"#"%>
             <%if !current_user.sex.nil?%>
-            (<%=User::SEX_NAME[current_user.sex]%>)
+              (<%=User::SEX_NAME[current_user.sex]%>)
             <%end%>
             <br/>
             <%=current_user.status ? '[冻结状态]':''%><br/><%=current_user.remark%>
@@ -51,7 +55,7 @@
       </div>
     <%end%>
     <div id="node_list_are" style="overflow: auto;height: 460px;margin-top: 10px;">
-     <%=render 'layouts/node_list'%>
+      <%=render 'layouts/node_list'%>
     </div>
   </div>
 

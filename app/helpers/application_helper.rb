@@ -32,6 +32,9 @@ module ApplicationHelper
       end
     end
   end
-  
+
+  def limit_length name,length
+    name.length>length ? "#{name[0...length]}.." : name
+  end
   
 end
