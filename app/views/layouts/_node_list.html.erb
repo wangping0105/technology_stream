@@ -1,10 +1,10 @@
  节点列表
       <%@left_nodeses.each do |section,nodes|%>
         <div class="node_list" >
-          <div onclick="show_node_list(this)" style="z-index: 2;" ><h1 style=" font-size: medium;"><%=section_name(@left_sections,section)%></h1></div>
+          <div onclick="show_node_list(this)" style="z-index: 2;padding: 5px;" ><h1 style=" font-size: medium;"><%=section_name(@left_sections,section)%></h1></div>
           <div class="node_area">
             <%nodes.each do |node|%>
-              <div> &nbsp;<%=link_to node.name,diff_categories_post_post_path(node.id)%></div>
+              <div> <%=link_to node.name,diff_categories_post_post_path(node.id)%></div>
             <%end%>
           </div>
         </div>

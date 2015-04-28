@@ -205,13 +205,21 @@ a:hover{
 
 .index_main_post_span{text-align: center;width: 100%;display: block;margin: 5px 0px;}
 .node_list div{
-    margin: 5px;
-    cursor: pointer;
-
+ margin: 5px;
+cursor: pointer;
+background: wheat;
 }
 .node_list .node_area{
     display: none;
 }
+.node_list .node_area div a{
+    display: block;
+}
+.node_list .node_area div a:hover{
+    display: block;
+    background: yellowgreen;
+}
+
 .sessions{
     background: #f2eada;
     height:600px;
