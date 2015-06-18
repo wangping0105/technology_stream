@@ -13,12 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140513050549) do
 
-  create_table "area", force: true do |t|
-    t.string "code",     limit: 6,  null: false
-    t.string "name",     limit: 20, null: false
-    t.string "citycode", limit: 6,  null: false
-  end
-
   create_table "attentions", force: true do |t|
     t.integer  "user_id"
     t.integer  "post_id"

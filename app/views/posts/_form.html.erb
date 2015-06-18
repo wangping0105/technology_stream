@@ -24,15 +24,23 @@
     <%=f.text_field :title,placeholder:"填写标题",style:"border: 1px solid #CCCCCC;width:100%;text-align:center;line-height: 2;font-size: 15px;"%>
   </div>
   <div class="index-right_left_div">
-    选择节点：<%=grouped_collection_select @nodes ,:node_id,Section.includes(:nodes),:nodes, :name, :id, :name,{:object => @post},class: 'chosen-select',name:"post[node]"%>
+    选择节点：<%=grouped_collection_select @nodes ,:node_id,Section.includes(:nodes),:nodes, :name, :id, :name,{:object => @post},class: 'chosen-select', name:"post[node]", id:"post_node"%>
     </div>
     <div class="index-right_left_div">
       <textarea id="k_editor_id" name="post[content]"style="width: 556px; height: 345px;border-color:#807E7E"><%=@post.content if !@post.nil?%></textarea>
     </div>
     <div class="index-right_left_div">
-      标签：<input name="post[tags]" style="width:500px;" value="<%=@tags  if !@post.nil?%>"/>(标签请用";"隔开)
+      标签：<input name="post[tags]" id="post_tags" style="width:500px;" value="<%=@tags  if !@post.nil?%>"/>(标签请用";"隔开)
     </div>
     <div style=" text-align: center;">
       <button   class="send_post" onclick="send_post(this)" type="button">发    表</button>
     </div>
 <%end%>
+
+<script>
+  $(function(){
+      $("#post_node").on("change",function(){
+          $("#post_tags").val($(this ).find('option:selected').text()+";" );
+      })
+  })
+</script>

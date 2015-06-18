@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
+ruby '2.1.5'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
 gem "mini_magick", "3.5.0" #handle image
@@ -8,6 +8,7 @@ gem 'bootstrap-sass', '2.3.2.0'
 gem 'rake', '~> 10.3.1'
 #kmeans聚类
 gem 'kmeans'
+
 gem 'rmagick'
 
 gem 'mysql2','0.3.10'

@@ -43,9 +43,11 @@ class ApplicationController < ActionController::Base
 
   def show_tips
     tips = Tip.all
-    r = Random.new
-    index = r.rand(0...tips.length)
-    @tip = tips[index]
+    if tips.present?
+      r = Random.new
+      index = r.rand(0...tips.length)
+    end 
+    @tip = tips[index||0]
   end
   def show_infos
     @users_count =User.select("count(*) count")
